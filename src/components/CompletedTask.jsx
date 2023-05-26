@@ -8,6 +8,7 @@ const CompletedTask = () => {
       style={{ height: "600px", width: "400px" }}
     >
       <h1 className="font-bold text-2xl mx-5">Completed Task:</h1>
+      <hr />
 
       <div className="mx-5 flex">
         <ul>

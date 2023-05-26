@@ -7,10 +7,10 @@ import AddTask from './components/AddTask'
 const App = () => {
   return (
     <div className='flex'>
-      {/* <Sidebar/>
+      <Sidebar/>
       <MainComponent/>
-      <CompletedTask/> */}
-      <AddTask/>
+      <CompletedTask/>
+      {/* <AddTask/> */}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
 
-const AddTask = () => {
+const AddTask = ({ onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [dateTime, setDateTime] = useState("");
@@ -36,7 +36,7 @@ const AddTask = () => {
     <div className="shadow-2xl m-4 rounded">
       <div className="flex justify-between text-2xl font-bold p-4">
         <h1>Add New Task</h1>
-        <GrClose className="cursor-pointer" />
+        <GrClose className="cursor-pointer" onClick={onClose} />
       </div>
       <hr />
       <form onSubmit={handleSubmit}>
