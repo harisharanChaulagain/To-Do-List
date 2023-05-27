@@ -8,6 +8,7 @@ const MainComponent = () => {
   const [tasks, setTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [showAddTask, setShowAddTask] = useState(false);
+  
 
   const handleAddTaskClick = () => {
     setShowAddTask(true);
@@ -15,8 +16,6 @@ const MainComponent = () => {
   const handleCloseAddTask = () => {
     setShowAddTask(false);
   };
-    
-
 
   useEffect(() => {
     axios
@@ -38,12 +37,36 @@ const MainComponent = () => {
     setSelectedTask(null);
   };
 
+  //delete
+  const handleDeleteTask = async (taskId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/tasks/${taskId}`
+      );
+
+      if (response.status === 200) {
+        // Task deleted successfully
+        console.log("Task deleted:", taskId);
+        // Update the tasks list
+        setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+      } else {
+        // Handle error response
+        console.log("Failed to delete task");
+      }
+    } catch (error) {
+      // Handle network error
+      console.log("Error:", error);
+    }
+  };
+
   return (
     <div className="m-10" style={{ height: "600px", width: "740px" }}>
       {showAddTask && <AddTask onClose={handleCloseAddTask} />}
       <h1 className="font-bold text-2xl">Today</h1>
-      <div className="flex text-white bg-gray-800 text-2xl mt-5 p-2 cursor-pointer"
-      onClick={handleAddTaskClick}>
+      <div
+        className="flex text-white bg-gray-800 text-2xl mt-5 p-2 cursor-pointer rounded shadow"
+        onClick={handleAddTaskClick}
+      >
         <MdPostAdd />
         <span>Add New Task</span>
       </div>
@@ -65,7 +88,10 @@ const MainComponent = () => {
                 />
               </li>
               <li>
-                <MdDelete className="text-red-500 hover:scale-125 transition-transform duration-300 cursor-pointer" />
+                <MdDelete
+                  className="text-red-500 hover:scale-125 transition-transform duration-300 cursor-pointer"
+                  onClick={() => handleDeleteTask(task.id)}
+                />
               </li>
             </li>
           </div>
@@ -90,7 +116,6 @@ const MainComponent = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };

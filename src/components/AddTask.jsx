@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GrClose } from "react-icons/gr";
+import axios from "axios";
 
 const AddTask = ({ onClose }) => {
   const [title, setTitle] = useState("");
@@ -18,19 +19,50 @@ const AddTask = ({ onClose }) => {
     setDateTime(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   // Print the values to the console
+  //   console.log("Title:", title);
+  //   console.log("Description:", description);
+  //   console.log("Date & Time:", dateTime);
+
+  //   // Clear the input fields
+  //   setTitle("");
+  //   setDescription("");
+  //   setDateTime("");
+  // };
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Print the values to the console
-    console.log("Title:", title);
-    console.log("Description:", description);
-    console.log("Date & Time:", dateTime);
+    const newTask = {
+      id: Date.now(),
+      title,
+      description,
+      dateTime,
+    };
 
-    // Clear the input fields
-    setTitle("");
-    setDescription("");
-    setDateTime("");
+    try {
+      const response = await axios.post("http://localhost:8000/tasks", newTask);
+
+      if (response.status === 201) {
+        // Task added successfully
+        console.log("Task added:", newTask);
+        // Clear the input fields
+        setTitle("");
+        setDescription("");
+        setDateTime("");
+      } else {
+        // Handle error response
+        console.log("Failed to add task");
+      }
+    } catch (error) {
+      // Handle network error
+      console.log("Error:", error);
+    }
   };
+
+
 
   return (
     <div className="shadow-2xl m-4 rounded">

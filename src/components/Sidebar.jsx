@@ -15,6 +15,7 @@ const Sidebar = () => {
           <GoThreeBars />
         </div>
       </div>
+      <hr />
       <ul className="p-4">
         <li className="flex justify-between ">
           <div>
