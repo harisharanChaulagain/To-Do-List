@@ -47,6 +47,7 @@ const MainComponent = () => {
       if (response.status === 200) {
         // Task deleted successfully
         console.log("Task deleted:", taskId);
+
         // Update the tasks list
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
       } else {
@@ -58,6 +59,41 @@ const MainComponent = () => {
       console.log("Error:", error);
     }
   };
+
+//completed task
+const handleDoneTask = async(taskId) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:8000/tasks/${taskId}`
+    );
+
+    if (response.status === 200) {
+      // Task deleted successfully
+      console.log("Task deleted:", taskId);
+
+      // Get the deleted task
+    const doneTask = tasks.find((task) => task.id === taskId);
+
+    // Add the deleted task to completed tasks
+    const completedTaskData = {
+      title: doneTask.title,
+      description: doneTask.description,
+      dateTime: doneTask.dateTime
+    };
+    await axios.post("http://localhost:8000/completedtasks", completedTaskData);
+
+      // Update the tasks list
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    } else {
+      // Handle error response
+      console.log("Failed to delete task");
+    }
+  } catch (error) {
+    // Handle network error
+    console.log("Error:", error);
+  }
+}
+
 
   return (
     <div className="m-10" style={{ height: "600px", width: "740px" }}>
@@ -76,7 +112,9 @@ const MainComponent = () => {
             <li>{task.title}</li>
             <li className="flex">
               <li>
-                <MdDone className="text-green-500 hover:scale-125 transition-transform duration-300 cursor-pointer" />
+                <MdDone className="text-green-500 hover:scale-125 transition-transform duration-300 cursor-pointer" 
+                onClick={() => handleDoneTask(task.id)}
+                />
               </li>
               <li>
                 <BiEdit className="text-orange-500 hover:scale-125 transition-transform duration-300 cursor-pointer" />
